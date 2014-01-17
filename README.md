@@ -1,6 +1,6 @@
 # node-xscope
 
-A node.js driver for [Gabotronics](www.gabotronics.com) Xminilab
+A node.js driver for [Gabotronics](http://www.gabotronics.com) Xminilab
 oscilloscopes.
 
 ### Overview
