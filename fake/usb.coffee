@@ -5,7 +5,8 @@ class Usb
     findDevice: true
   
   #
-  findByIds: () ->
+  findByIds: (gid, vid) ->
+    console.log 'findByIds', vid, gid
     if @options.findDevice
       return new Device()
     else
@@ -18,11 +19,21 @@ class Usb
 
 class Device
 
+  interfaces: null
+  
   constructor: () ->
     @interfaces = [ new Interface() ]
 
+  open: () ->
+    @open = true
+    
+  interface: (i) ->
+    return @interfaces[i]
+  
 class Interface
 
+  flag: 'here i am'
+  
   constructor: () ->
     x = 0
   

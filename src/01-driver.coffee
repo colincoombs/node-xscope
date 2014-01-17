@@ -23,9 +23,10 @@ class Driver
   #
   open: () ->
     deferred = Q.defer()
-    @dev = @usb.findByIds(@vid, @gid)
+    @dev = @usb.findByIds(@vid, @pid)
     if @dev
-      @itf = @dev.interfaces[0]
+      @dev.open()
+      @itf = @dev.interface(0)
       @itf.claim()
       deferred.resolve()
     else

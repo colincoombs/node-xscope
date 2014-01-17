@@ -1,11 +1,23 @@
 #! /usr/bin/env coffee
 
 program = require('commander')
-xscope = require('..')
+xscope  = require('..')
 
 program
   .option('--firmware', 'read firmware version')
+  .option('--fake', 'use fake usb module')
   .version('0.0.1')
   .parse(process.argv)
 
-throw new Error('tbs')
+if program.fake
+  usb = require('../fake/usb')
+  usb.configure { findDevice: true }
+else
+  usb = require('usb')
+
+
+driver = new xscope.Driver(usb)
+
+driver.open()
+  .then(() -> console.log 'so far, so good')
+  .done()

@@ -13,7 +13,7 @@ program
 
 if program.fake
   usb = require('../fake/usb')
-  usb.configure { find: true }
+  usb.configure { findDevice: true }
 else
   usb = require('usb')
 
