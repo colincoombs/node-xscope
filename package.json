@@ -1,0 +1,37 @@
+{
+  "name": "node-xscope",
+  "version": "0.0.1",
+  "description": "node.js USB driver for Xminilab oscilloscope",
+  "main": "lib/xscope.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/colincoombs/node-xscope.git"
+  },
+  "keywords": [
+    "usb",
+    "driver",
+    "oscilloscope",
+    "Gabotronics",
+    "Xminilab"
+  ],
+  "author": "Colin Coombs <github@colincoombs.plus.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/colincoombs/node-xscope/issues"
+  },
+  "homepage": "https://github.com/colincoombs/node-xscope",
+  "dependencies": {
+    "usb": "~0.3.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-coffeelint": "0.0.8",
+    "grunt-contrib-coffee": "~0.8.0",
+    "grunt-exec": "~0.4.3",
+    "grunt-simple-mocha": "~0.4.0",
+    "chai": "~1.8.1"
+  }
+}

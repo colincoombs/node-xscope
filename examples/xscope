@@ -1,0 +1,11 @@
+#! /usr/bin/env coffee
+
+program = require('commander')
+xscope = require('..')
+
+program
+  .option('--firmware', 'read firmware version')
+  .version('0.0.1')
+  .parse(process.argv)
+
+throw new Error('tbs')

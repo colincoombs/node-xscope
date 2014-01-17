@@ -1,0 +1,63 @@
+@startuml
+
+class USB {
+  +findByIds()
+  -getDeviceList()
+  -setDebugLevel()
+
+}
+
+class Device {
+  +timeout
+  -busNumber
+  -deviceAdress
+  -deviceDescriptor
+  -configDescriptor
+  -interfaces
+  +open()
+  +close()
+  +controlTransfer()
+  +interface(number)
+  -reset()
+}
+
+class Interface {
+  -endpoints
+  -interface
+  -altSetting
+  +claim()
+  +release()
+  +endpoint(address)
+  -setAltSetting()
+  -isKernelDriverActive()
+  -detachKernelDriver()
+  -attachKernelDriver()
+  -descriptor
+}
+
+class Endpoint {
+  -direction
+  -transferType
+  -descriptor
+}
+
+class InEndpoint {
+  +transfer()
+  +startStream()
+  +stopStream()
+}
+
+class OutEndpoint {
+  +transfer()
+  -startStream()
+  -write()
+  -stopStream()
+}
+
+USB - Device
+Device *- Interface
+Interface *- Endpoint
+Endpoint <|-- InEndpoint
+Endpoint <|-- OutEndpoint
+
+@enduml

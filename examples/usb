@@ -1,0 +1,18 @@
+#! /usr/bin/env coffee
+
+program = require('commander')
+
+program
+  .option('--fake', 'use fake usb module')
+  .option('--find', 'usb.findByIds()')
+  .version('0.0.1')
+  .parse(process.argv)
+
+if program.fake
+  usb = require('../fake/usb')
+  usb.configure { find: true }
+else
+  usb = require('usb')
+
+if program.find
+  console.log usb.findByIds(0x16d0, 0x06f9)

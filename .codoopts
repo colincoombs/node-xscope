@@ -1,0 +1,9 @@
+--name   "xscope"
+--readme "doc/pages/README.md"
+--title  "XScope Driver package"
+--quiet
+--private
+--output ./doc/codo
+./src
+-
+
