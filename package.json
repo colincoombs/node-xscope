@@ -24,7 +24,8 @@
   },
   "homepage": "https://github.com/colincoombs/node-xscope",
   "dependencies": {
-    "usb": "~0.3.0"
+    "usb": "~0.3.0",
+    "q": "~1.0.0"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

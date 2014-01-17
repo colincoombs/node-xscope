@@ -1,5 +1,8 @@
 #! /usr/bin/env coffee
 
+# this little program lets you see the results of calling the
+# usb module's various methods.
+
 program = require('commander')
 
 program
