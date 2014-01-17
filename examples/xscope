@@ -19,5 +19,8 @@ else
 driver = new xscope.Driver(usb)
 
 driver.open()
-  .then(() -> console.log 'so far, so good')
-  .done()
+.then( () ->
+  driver.getFirmwareVersion()
+).then( (data) ->
+  console.log 'firmware version', data.toString()
+).done()

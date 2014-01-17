@@ -47,3 +47,36 @@ describe 'Driver', ->
         ()    -> done(new Error('should be rejected'))
       , (err) -> done()
       )
+
+  describe 'getFirmwareVersion', ->
+
+    it 'is rejected unless the device has been opened', ->
+      
+      # arrange
+      fake_usb.configure { findDevice: true }
+      driver = new xscope.Driver(fake_usb)
+      
+      # act
+      promise = driver.getFirmwareVersion()
+      
+      # assert
+      promise.then(
+        ()    -> done(new Error('should not happen'))
+      , (err) -> done()
+      )
+      
+    it 'returns a string', ->
+
+      # arrange
+      fake_usb.configure { findDevice: true }
+      driver = new xscope.Driver(fake_usb)
+      
+      # act
+      promise = driver.open()
+        .then( () -> driver.getFirmwareVersion() )
+        
+      # assert
+      promise.then(
+        ()    -> done()
+      , (err) -> done(err)
+      )

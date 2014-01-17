@@ -6,8 +6,9 @@
 program = require('commander')
 
 program
-  .option('--fake', 'use fake usb module')
-  .option('--find', 'usb.findByIds()')
+  .option('-k, --fake', 'use fake usb module')
+  .option('-f, --find', 'usb.findByIds()')
+  .option('--itf <n>', 'device.interface(n)', parseInt)
   .version('0.0.1')
   .parse(process.argv)
 
@@ -17,5 +18,14 @@ if program.fake
 else
   usb = require('usb')
 
+dev = usb.findByIds(0x16d0, 0x06f9)
+dev.open()
+
 if program.find
-  console.log usb.findByIds(0x16d0, 0x06f9)
+  console.log dev
+
+
+if program.itf?
+  itf = dev.interface(program.itf)
+  console.log program.itf, itf
+

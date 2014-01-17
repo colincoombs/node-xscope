@@ -33,4 +33,17 @@ class Driver
       deferred.reject(new Error('device not found'))
     return deferred.promise
   
+  getFirmwareVersion: () ->
+    deferred = Q.defer()
+    if @dev
+      @dev.controlTransfer(0xC0, 0x61, 0, 0, 4, (err, data) ->
+        if (err)
+          deferred.reject(err)
+        else
+          deferred.resolve(data)
+      )
+    else
+      deferred.reject(new Error('device not open'))
+    return deferred.promise
+    
 module.exports.Driver = Driver
