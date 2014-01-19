@@ -1,11 +1,12 @@
 #! /usr/bin/env coffee
 
+fs      = require('fs')
 program = require('commander')
+Q       = require('q')
 xscope  = require('..')
 
 program
-  .option('--firmware', 'read firmware version')
-  .option('--fake', 'use fake usb module')
+  .option('-k, --fake', 'use fake usb module')
   .version('0.0.1')
   .parse(process.argv)
 
@@ -15,12 +16,41 @@ if program.fake
 else
   usb = require('usb')
 
-
+actions =
+  firmware: =>
+    driver.getFirmwareVersion().then( (data) ->
+      console.log data
+    )
+  read: =>
+    out = fs.createWriteStream('/tmp/xscope')
+    driver.read(900).then( (data) ->
+      console.log 'got', data.length
+      out.end(data)
+    )
+  stream: =>
+    driver.startStream(fs.createWriteStream('/tmp/xscope'))
+    
 driver = new xscope.Driver(usb)
 
-driver.open()
-.then( () ->
-  driver.getFirmwareVersion()
-).then( (data) ->
-  console.log 'firmware version', data.toString()
-).done()
+# phase 1: start the promise chain
+
+goForIt = Q.defer()
+promise = goForIt.promise
+.then(driver.open)
+
+# phase 2: add more promises for the actions named in args
+
+while program.args.length > 0
+  keyword = program.args.shift()
+  if actions[keyword]?
+    promise = promise.then(actions[keyword])
+  else
+    promise = Q.reject(new Error('unknown keyword: ' + keyword))
+
+# phase 3: terminate the chain to catch any errors
+
+promise.done()
+
+# phase 4: kick the whole chain into action
+
+goForIt.resolve()

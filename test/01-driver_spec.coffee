@@ -2,6 +2,8 @@
 #
 chai = require('chai')
 should = chai.should()
+expect = chai.expect
+
 fake_usb = require('../fake/usb')
 
 # Software under test
@@ -48,9 +50,39 @@ describe 'Driver', ->
       , (err) -> done()
       )
 
-  describe 'getFirmwareVersion', ->
-
-    it 'is rejected unless the device has been opened', ->
+  describe 'close()', ->
+    it 'is not written yet!'
+    
+  describe 'controlTransfer()', ->
+    it 'has no tests yet'
+  
+  describe 'read()', ->
+    it 'has no tests yet'
+    
+  describe 'write()', ->
+    it 'has no tests yet'
+    
+  describe 'flush()', ->
+    it 'has no tests yet'
+    
+  describe 'startStream()', ->
+    it 'has no tests yet'
+    
+  describe 'stopStream()', ->
+    it 'has no tests yet'
+  
+  describe 'streamData()', ->
+    it 'has no tests yet'
+    
+  describe 'streamError()', ->
+    it 'has no tests yet'
+    
+  describe 'streamEnd()', ->
+    it 'has no tests yet'
+    
+  describe 'getFirmwareVersion()', ->
+    
+    it 'is rejected unless the device has been opened', (done) ->
       
       # arrange
       fake_usb.configure { findDevice: true }
@@ -65,7 +97,7 @@ describe 'Driver', ->
       , (err) -> done()
       )
       
-    it 'returns a string', ->
+    it 'returns a string', (done) ->
 
       # arrange
       fake_usb.configure { findDevice: true }
@@ -73,10 +105,19 @@ describe 'Driver', ->
       
       # act
       promise = driver.open()
-        .then( () -> driver.getFirmwareVersion() )
+        .then( driver.getFirmwareVersion )
         
       # assert
-      promise.then(
+      promise.then( (v) ->
+        v.should.be.a('string')
+      ).then(
         ()    -> done()
       , (err) -> done(err)
       )
+
+  describe 'start()', ->
+    it 'has no tests yet'
+    
+  describe 'stop()', ->
+    it 'has no tests yet'
+  

@@ -1,3 +1,5 @@
+events = require('events')
+
 options =
   findDevice: true
 
@@ -30,7 +32,7 @@ class Device
   
   controlTransfer: (t,c,i,v,dol,cb) ->
     switch c
-      when 0x61 then cb(null, '3.14159')
+      when 0x61 then cb(null, new Buffer('3.14159'))
       else cb(new Error('unknown command code'), null)
         
   
@@ -44,12 +46,20 @@ class Interface
   claim: () ->
     return
 
-class InEndpoint
+  endpoint: (i) ->
+    @endpoints[i]
+    
+class InEndpoint extends events.EventEmitter
 
   constructor: () ->
     x = 0
 
-class OutEndpoint
+  startStream: (n, p, cb) ->
+    console.log 'startStream'
+    b = new Buffer(770)
+    @emit 'data', b
+
+class OutEndpoint extends events.EventEmitter
 
   constructor: () ->
     x = 0
