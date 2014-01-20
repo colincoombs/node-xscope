@@ -2,42 +2,57 @@ Q = require('q')
 
 # my simplified USB driver class
 #
-class Driver
+class UsbDriver
 
   # @property [Device] the usb-module device
+  # @private
   #
-  dev: null
+  __dev: null
   
   # @property [Interface] the usb-module interface
+  # @private
   #
-  itf: null
+  __itf: null
   
   # @property [InEndpoint] to read the captured data
-  #
-  rep: null
+  # @private
+  __rep: null
   
   # @property [OutEndpoint] to write the custom waveform
+  # @private
   #
-  wep: null
+  __wep: null
   
+  # @property [WriteStream] for srtreaming reads.
+  # @private
+  __writeStream: null
+  
+  # @property [Array<Integer>] to hold the scope's control data
+  # @protected
+  #
+  _controlBytes: null
+    
   # @param [Object] usb the usb module (required)
   # @param [Integer] vid USB vendor id (optional)
   # @param [Integer} pid USB product id (optional)
   #
   constructor: (@usb, @vid=0x16D0, @pid=0x06F9) ->
     throw new Error('usb module required') unless @usb?
-  
+    @_controlBytes = []
+    for i in [0...44]
+      @_controlBytes[i] = 0
+    
   # @return [Promise] for completion
   #
   open: () =>
     deferred = Q.defer()
-    @dev = @usb.findByIds(@vid, @pid)
-    if @dev
-      @dev.open()
-      @itf = @dev.interface(0)
-      @itf.claim()
-      @wep = @itf.endpoint(0x01)
-      @rep = @itf.endpoint(0x81)
+    @__dev = @usb.findByIds(@vid, @pid)
+    if @__dev
+      @__dev.open()
+      @__itf = @__dev.interface(0)
+      @__itf.claim()
+      @__wep = @__itf.endpoint(0x01)
+      @__rep = @__itf.endpoint(0x81)
       deferred.resolve()
     else
       deferred.reject(new Error('device not found'))
@@ -48,12 +63,15 @@ class Driver
   # @param [Integer] value
   # @param [Integer | Buffer] data_or_length
   # @return [Promise] for completion and any data
+  # @protected
   #
-  controlTransfer: (cmd, index=0, value=0, data_or_length=0) =>
+  _controlTransfer: (cmd, index=0, value=0, data_or_length=0) =>
+    #console.log 'controlTransfer', cmd, index, value, data_or_length
     deferred = Q.defer()
-    if @dev
-      @dev.controlTransfer(0xC0, cmd, index, 0, 4, (err, data) ->
+    if @__dev
+      @__dev.controlTransfer(0xC0, cmd, index, 0, data_or_length, (err, data) ->
         if (err)
+          console.log 'oops', err
           deferred.reject(err)
         else
           deferred.resolve(data)
@@ -67,8 +85,8 @@ class Driver
   #
   read: (length=770) =>
     deferred = Q.defer()
-    if @dev
-      @rep.transfer(length, (err, data) ->
+    if @__dev
+      @__rep.transfer(length, (err, data) ->
         if (err)
           deferred.reject(err)
         else
@@ -83,8 +101,8 @@ class Driver
   #
   write: (data) =>
     deferred = Q.defer()
-    if @dev
-      @wep.transfer(data, (err, data) ->
+    if @__dev
+      @__wep.transfer(data, (err, data) ->
         if (err)
           deferred.reject(err)
         else
@@ -108,51 +126,34 @@ class Driver
     
     
     
-  # @param [WriteStream]
+  # @param [WriteStream] writeStream
   # @return [Promise]
   #
-  startStream: (@writeStream) ->
+  startStream: (@__writeStream) =>
     @streaming = Q.defer()
-    if !@writeStream?
+    if !@__writeStream?
       @streaming.reject(new Error('writeStream required'))
-    else if !@dev?
+    else if !@__dev?
       @streaming.reject(new Error('device not open'))
     else
-      @rep = @itf.endpoint(0x81)
-      @rep.on 'data', @streamData
-      @rep.on 'error', @streamError
-      @rep.on 'end', @streamEnd
-      @rep.startStream(3, 770)
+      @__rep = @__itf.endpoint(0x81)
+      @__rep.on 'data',  @__streamData
+      @__rep.on 'error', @__streamError
+      @__rep.on 'end',   @__streamEnd
+      @__rep.startStream(3, 1500)
     return @streaming.promise
         
-  stopStream: () ->
-    @rep.stopStream() if @dev?
+  stopStream: () =>
+    @__rep.stopStream() if @__dev?
     @streaming.resolve()
 
-  streamData: (data) =>
-    console.log 'data', data.length
-    @writeStream.write(data)
+  __streamData: (data) =>
+    @__writeStream.write(data)
     
-  streamError: (err) =>
-    console.log err
-    console.error err
+  __streamError: (err) =>
+    @streaming.reject(err)
     
-  streamEnd: () =>
-    console.log 'end'
-    @writeStream.end()
-  
-  # @return [Promise] for the firmware version as a string.
-  #
-  getFirmwareVersion: () =>
-    @controlTransfer(0x61, 0, 0, 4)
-    .then( (data) ->
-      data.toString()
-    )
+  __streamEnd: () =>
+    @__writeStream.end()
     
-  stop: () =>
-    @controlTransfer(0x66)
-
-  start: () =>
-    @controlTransfer(0x67)
-
-module.exports.Driver = Driver
+module.exports.UsbDriver = UsbDriver

@@ -10,22 +10,22 @@ fake_usb = require('../fake/usb')
 #
 xscope = require('..')
 
-describe 'Driver', ->
+describe 'UsbDriver', ->
   
   describe 'constructor', ->
     
     it 'requires a usb package', ->
-      (-> new xscope.Driver).should.throw('usb module required')
+      (-> new xscope.UsbDriver).should.throw('usb module required')
 
     it 'is happy with a fake usb module', ->
-      (-> new xscope.Driver(fake_usb)).should.not.throw(Error)
+      (-> new xscope.UsbDriver(fake_usb)).should.not.throw(Error)
       
   describe 'open()', ->
     
     it '[returns a promise which] is resolved on success', (done) ->
       # arrange
       fake_usb.configure { findDevice: true }
-      driver = new xscope.Driver(fake_usb)
+      driver = new xscope.UsbDriver(fake_usb)
       
       # act
       promise = driver.open()
@@ -39,7 +39,7 @@ describe 'Driver', ->
     it '[returns a promise which] is rejected on failure', (done) ->
       # arrange
       fake_usb.configure { findDevice: false }
-      driver = new xscope.Driver(fake_usb)
+      driver = new xscope.UsbDriver(fake_usb)
       
       # act
       promise = driver.open()
@@ -80,44 +80,3 @@ describe 'Driver', ->
   describe 'streamEnd()', ->
     it 'has no tests yet'
     
-  describe 'getFirmwareVersion()', ->
-    
-    it 'is rejected unless the device has been opened', (done) ->
-      
-      # arrange
-      fake_usb.configure { findDevice: true }
-      driver = new xscope.Driver(fake_usb)
-      
-      # act
-      promise = driver.getFirmwareVersion()
-      
-      # assert
-      promise.then(
-        ()    -> done(new Error('should not happen'))
-      , (err) -> done()
-      )
-      
-    it 'returns a string', (done) ->
-
-      # arrange
-      fake_usb.configure { findDevice: true }
-      driver = new xscope.Driver(fake_usb)
-      
-      # act
-      promise = driver.open()
-        .then( driver.getFirmwareVersion )
-        
-      # assert
-      promise.then( (v) ->
-        v.should.be.a('string')
-      ).then(
-        ()    -> done()
-      , (err) -> done(err)
-      )
-
-  describe 'start()', ->
-    it 'has no tests yet'
-    
-  describe 'stop()', ->
-    it 'has no tests yet'
-  

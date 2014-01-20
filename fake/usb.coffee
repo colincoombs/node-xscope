@@ -33,8 +33,14 @@ class Device
   controlTransfer: (t,c,i,v,dol,cb) ->
     switch c
       when 0x61 then cb(null, new Buffer('3.14159'))
-      else cb(new Error('unknown command code'), null)
+      when 0x75 then cb(null, @dummySettings())
+      else cb(new Error('unknown command code '+c.toString()), null)
         
+  dummySettings: () ->
+    b = new Buffer(44)
+    for i in [0...b.length]
+      b[i] = i
+    return b
   
 class Interface
 
