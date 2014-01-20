@@ -1,10 +1,10 @@
-# getconfig example ** DRAFT VERSION to check formatting & stuff **
+# getconfig example __DRAFT VERSION to check formatting & stuff__
 
 This example shows how you could save the current control setup
 of the Xminilab to a file.
 
-** To understand this program, you will first need to understand
-'promises'.**
+__ To understand this program, you will first need to understand
+'promises'. __
 
 ## Installation
 
@@ -33,6 +33,9 @@ I have provided for two settings:
   utility). Without this option, the program outputs a Javascript
   object value, which is more readable to humans, less so for
   programs.
+
+It seems I must write something herfe, just to separate the itemized
+stuff before from the code section after.
   
     program
       .option('-k, --fake', 'use fake usb module')
