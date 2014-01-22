@@ -83,7 +83,7 @@ class Plot extends stream.Transform
     # tell the caller we're done with this frame
     cb()
     
-driver = new xscope.Driver(usb)
+driver = new xscope.XScopeDriver(usb)
 
 limiter = new Limit(4, () ->
   console.log 'chopping'

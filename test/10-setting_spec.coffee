@@ -6,16 +6,17 @@ xscope = require('..')
 
 SOME_NAME = 'fred'
 SOME_DRIVER = {}
+SOME_INDEX = 7
 
 describe 'Setting', ->
   
-  describe 'constructor(parent, driver, name, options)', ->
+  describe 'constructor(parent, driver, name, index, options)', ->
 
     it 'requires a name', ->
-      (-> new xscope.Setting(null, SOME_DRIVER, null)).should.throw(Error)
+      (-> new xscope.Setting(null, SOME_DRIVER, null, null)).should.throw(Error)
     
     it 'works, otherwise', ->
-      (-> new xscope.Setting(null, SOME_DRIVER, SOME_NAME)).should.not.throw(Error)
+      (-> new xscope.Setting(null, SOME_DRIVER, SOME_NAME, SOME_INDEX)).should.not.throw(Error)
    
     it 'can be given options', ->
       # arrange
@@ -23,6 +24,7 @@ describe 'Setting', ->
       s = new xscope.Setting(null,
         SOME_DRIVER,
         SOME_NAME,
+        SOME_INDEX,
         max: 21,
         min: 1
       )
@@ -50,12 +52,14 @@ describe 'Setting', ->
       result.should.equal('p.c')
   
   describe 'configure(value)', ->
+    
     it 'rejects values which are too small', ->
       # arrange
       s = new xscope.Setting(
         null,
         SOME_DRIVER,
         SOME_NAME,
+        SOME_INDEX,
         max: 21,
         min: 1
       )      
@@ -68,6 +72,7 @@ describe 'Setting', ->
         null,
         SOME_DRIVER,
         SOME_NAME,
+        SOME_INDEX,
         max: 21,
         min: 1
       )      
@@ -80,6 +85,7 @@ describe 'Setting', ->
         null,
         SOME_DRIVER,
         SOME_NAME,
+        SOME_INDEX,
         enum: [
           'red',
           'green',
@@ -95,6 +101,7 @@ describe 'Setting', ->
         null,
         SOME_DRIVER,
         SOME_NAME,
+        SOME_INDEX,
         enum: [
           'red',
           'green',

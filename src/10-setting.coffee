@@ -8,7 +8,9 @@ class Setting
 
   _value: null
   
-  constructor: (@_parent, @_driver, @_name, options) ->
+  _index: null
+  
+  constructor: (@_parent, @_driver, @_name, @_index, options) ->
     throw new Error('name not defined') unless @_name?
     #console.log 'addme', this
     @_parent.add(this) if @_parent?
@@ -21,13 +23,13 @@ class Setting
     else
       @_name
 
-  # @todo - push this up to superclass -ish
-  #
   configure: (value) ->
     if (@min? and value < @min) or (@max? and value > @max)
       throw new RangeError("#{@name()}: value out of range: '#{value}'")
     if @enum
       @_value = @verifiedEnumValue(value)
+      @_min ?= 0
+      @_max ?= @enum.length
     else
       @_value = value
     @_byte = @_value << @_shift
@@ -45,10 +47,15 @@ class Setting
       @_value
     
   syncFromHw: () ->
+    throw new Error('driver not present') unless @_driver?
     @_byte = @_driver.readControlByte(@_index)
-    @_value = @_byte
+    value = @_byte
+    if (@min? and value < @min) or (@max? and value > @max)
+      throw new RangeError("#{@name()}: value out of range: '#{value}'")
+    @_value = value
     
   syncToHw: () ->
+    throw new Error('driver not present') unless @_driver?
     @_driver.writeControlByte(@_index, @_byte)
     
 

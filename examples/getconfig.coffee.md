@@ -1,17 +1,12 @@
-# getconfig example __DRAFT VERSION to check formatting & stuff__
+# getconfig example
+
+__DRAFT VERSION to check formatting & stuff__
 
 This example shows how you could save the current control setup
 of the Xminilab to a file.
 
-__ To understand this program, you will first need to understand
-'promises'. __
-
-## Installation
-
-** To be written more clealy!**
-
-The use of '..' to require the xscope package assumes that you are
-running this script in its current place in the directory tree.
+__To understand this program, you will first need to understand
+'promises'.__
 
 ## The code
 
@@ -20,7 +15,7 @@ First, we have a pretty standard prelude of node.js stuff.
     #! /usr/bin/env coffee
     
     fs      = require('fs')
-    program = require('commander')
+    options = require('commander')
     xscope  = require('..')
 
 The next stanza defines and parses the program's options. Here,
@@ -37,25 +32,19 @@ I have provided for two settings:
 It seems I must write something herfe, just to separate the itemized
 stuff before from the code section after.
   
-    program
+    options
       .option('-k, --fake', 'use fake usb module')
       .option('-j, --json', 'output JSON rather than javascript')
+      .option('-r, --raw',  'output JSON of the raw control bytes')
       .version('0.0.1')
       .parse(process.argv)
     
-    if program.fake
+    if options.fake
       usb = require('../fake/usb')
       usb.configure { findDevice: true }
     else
       usb = require('usb')
 
-It seems we have to create the result object here in the top scope,
-otherwise the actions in the various callbacks below will each refer
-to a different, local, variable called 'settings'. Notice also that
-the callbacks must always use the 'fat arrow' syntax
-
-    settings = {}
-    
 Now we can get down to business. All the methods of the driver class
 return promises to handle their asynchronous nature, so we must
 express the intended sequence of calls and other actions in a chain
@@ -63,18 +52,17 @@ of 'then' calls.
 
     driver = new xscope.XScopeDriver(usb)
     
-    driver.open()
-    .then( =>
+    driver.open().then( =>
       driver.syncFromHw()
     ).then( =>
-      settings = driver.createSettings()
-      settings.syncFromHw()
-    ).then( =>
-      if program.json
-        process.stdout.write JSON.stringify settings.value()
+      if options.raw
+        process.stdout.write JSON.stringify driver._controlBytes
+        process.stdout.write '\n'
+      else if options.json
+        process.stdout.write JSON.stringify driver.settings.value()
         process.stdout.write '\n'
       else
-        console.log settings.value()
+        console.log driver.settings.value()
     ).done()
 
 Just to bang on about promises some more, notice control reaches this

@@ -18,7 +18,9 @@ describe 'XScopeDriver', ->
       (-> new xscope.XScopeDriver).should.throw('usb module required')
 
     it 'is happy with a fake usb module', ->
-      (-> new xscope.XScopeDriver(fake_usb)).should.not.throw(Error)
+      #(->
+      new xscope.XScopeDriver(fake_usb)
+      #).should.not.throw(Error)
       
   describe 'getFirmwareVersion()', ->
     

@@ -3,7 +3,7 @@ xscope = require('..')
 class Group extends xscope.Setting
 
   constructor: (parent, name) ->
-    super(parent, null, name)
+    super(parent, null, name, null)
     @_value = {}
   
   add: (component) ->

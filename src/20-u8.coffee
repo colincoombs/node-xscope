@@ -4,12 +4,12 @@ class U8 extends xscope.Setting
 
   _byte: 0
   
-  _index: 0
-  
-  constructor: (parent, driver, name, @_index, options) ->
+  constructor: (parent, driver, name, index, options) ->
     throw new Error('driver not defined') unless driver?
-    throw new Error('index not defined') unless @_index?
-    super(parent, driver, name, options)
+    throw new Error('index not defined') unless index?
+    super(parent, driver, name, index, options)
+    @min ?= 0
+    @max ?= 255
     
   configure: (value) ->
     @_value = value

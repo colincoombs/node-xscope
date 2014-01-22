@@ -19,21 +19,27 @@ class Bits extends xscope.Setting
   @masks: [ 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F, 0xFF]
 
   constructor: (parent, driver, name,
-                @_index, @_shift, @_width, options={}) ->
-    super(parent, driver, name, options)
+                index, @_shift, @_width, options={}) ->
+    super(parent, driver, name, index, options)
     throw new Error('driver not defined') unless @_driver?
-    throw new Error('index not defined') unless @_index?
+    throw new Error('index not defined') unless index?
     throw new Error('shift not defined') unless @_shift?
     throw new Error('width not defined') unless @_width?
-    
+    throw new Error('overflows the byte') unless @_width + @_shift <= 8
     @_mask = @constructor.masks[@_width - 1] << @_shift
+    @min ?= 0
+    @max ?= @constructor.masks[@_width-1]
 
   # @todo - parent should invoke byteToValue which we can override
   # @todo validate min/max
   syncFromHw: () ->
-    super()
-    @_value = @_byte >> @_shift
-    
+    throw new Error('driver not present') unless @_driver?
+    @_byte = @_driver.readControlByte(@_index) & @_mask
+    value = @_byte >> @_shift
+    if (@min? and value < @min) or (@max? and value > @max)
+      throw new RangeError("#{@name()}: value out of range: '#{value}'")
+    @_value = value
+
   syncToHw: () ->
     byte = @_driver.readControlByte(@_index)
     byte = byte & ~@_mask
