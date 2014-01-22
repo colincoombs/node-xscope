@@ -29,7 +29,7 @@ I have provided for two settings:
   object value, which is more readable to humans, less so for
   programs.
 
-It seems I must write something herfe, just to separate the itemized
+It seems I must write something here, just to separate the itemized
 stuff before from the code section after.
   
     options
@@ -50,7 +50,7 @@ return promises to handle their asynchronous nature, so we must
 express the intended sequence of calls and other actions in a chain
 of 'then' calls.
 
-    driver = new xscope.XScopeDriver(usb)
+    driver = new xscope.XScope(usb)
     
     driver.open().then( =>
       driver.syncFromHw()
