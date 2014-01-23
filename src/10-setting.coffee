@@ -25,7 +25,7 @@ class Setting
 
   name: () ->
     if @_parent?
-      @_parent.name()+'.'+@_name
+      "#{@_parent.name()}.#{@_name}"
     else
       @_name
 

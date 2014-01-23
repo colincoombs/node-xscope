@@ -58,6 +58,20 @@ class UsbDriver
       deferred.reject(new Error('device not found'))
     return deferred.promise
   
+  close: () ->
+    deferred = Q.defer()
+    if @__dev
+      @__itf.release( (err) =>
+        if err
+          deferred.reject(err)
+        else
+          @__dev.close()
+          deferred.resolve()
+      )
+    else
+      deferred.reject(new Error('device not open'))
+    return deferred.promise
+
   # @param [Integer] cmd
   # @param [Integer] index
   # @param [Integer] value

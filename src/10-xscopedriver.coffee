@@ -81,31 +81,7 @@ class XScopeDriver extends xscope.UsbDriver
     trg = new xscope.Group(top, 'trigger')
     awg = new xscope.Group(top, 'awg')
     nul = new xscope.Group(null, 'tbd')
-    new   xscope.U8(top, this, "timebase",   0,
-      enum: [
-        '8us/div',
-        '16us/div',
-        '32us/div',
-        '64us/div',
-        '128us/div',
-        '256us/div',
-        '500us/div',
-        '1ms/div',
-        '2ms/div',
-        '5ms/div',
-        '10ms/div',
-        '20ms/div',
-        '50ms/div',
-        '100ms/div',
-        '200ms/div',
-        '500ms/div',
-        '1s/div',
-        '2s/div',
-        '5s/div',
-        '10s/div',
-        '20s/div',
-        '50s/div'
-      ])
+    new   xscope.Timebase(top, this, "timebase", 0)
     #new   xscope.U8(ch1, this, 'control',    1)
     new xscope.Bits(ch1, this, "on", 1, 0, 1)
     new xscope.Bits(ch1, this, "invert", 1, 4, 1)
@@ -123,14 +99,14 @@ class XScopeDriver extends xscope.UsbDriver
     new   xscope.U8(chd, this, 'mask',       4)
     new xscope.Bits(trg, this, "mode",   5, 0, 3,
       enum: [
-        'X-00',
+        undefined,
         'normal',
-        'X-02',
+        undefined,
         'single',
         'auto',
-        'X-05',
-        'X-06',
-        'X-07'
+        undefined,
+        undefined,
+        undefined
       ])
     new xscope.Bits(trg, this, "direction", 5, 3, 1)
     new xscope.Bits(trg, this, 'round',      5, 4, 1)
@@ -139,11 +115,11 @@ class XScopeDriver extends xscope.UsbDriver
         'dual-edge',
         'slope',
         'window',
-        'X-03',
+        undefined,
         'edge',
-        'X-05',
-        'X-06',
-        'X-07'
+        undefined,
+        undefined,
+        undefined
       ])
     new xscope.Bits(nul, this, 'MCursors',   6, 0, 8)
     new xscope.Bits(dsp, this, 'grid',       7, 0, 2)
@@ -159,17 +135,8 @@ class XScopeDriver extends xscope.UsbDriver
     #new xscope.Bits(nul, this, 'Sniffer',   10, 0, 8)
     new xscope.Bits(top, this, "stopped",   11, 4, 1)
     new xscope.Bits(top, this, "triggered", 11, 5, 1)
-    new   xscope.U8(ch1, this, "gain",      12,
-      enum: [
-        '5.12V/div',
-        '2.56V/div',
-        '1.28V/div',
-        '640mV/div',
-        '320mV/div',
-        '160mV/div',
-        '80mV/div'
-      ])
-    #new   xscope.U8(ch2, this, 'gain',      13)
+    new   xscope.ChannelGain(ch1, this, "gain",      12)
+    new   xscope.ChannelGain(ch2, this, 'gain',      13)
     #new xscope.Bits(nul, this, 'HPos',      14, 0, 8)
     #new xscope.Bits(nul, this, 'VCursorA',  15, 0, 8)
     #
@@ -179,7 +146,7 @@ class XScopeDriver extends xscope.UsbDriver
     #new xscope.Bits(nul, this, 'HCursor2A', 19, 0, 8)
     #
     #new xscope.Bits(nul, this, 'HCursor2B', 20, 0, 8)
-    new xscope.U16(trg, this, "post", 21)
+    new xscope.U16(trg, this, "post", 22)
     new xscope.U8(trg, this, "source", 24)
     new xscope.U8(trg, this, "level", 25)
     new xscope.U8(trg, this, "window1", 26)
@@ -199,7 +166,7 @@ class XScopeDriver extends xscope.UsbDriver
     new   xscope.U8(awg, this, 'duty',      38)
     new   xscope.S8(awg, this, 'offset',    39)
     #
-    #new xscope.Item(awg, this, 'freq',      40, 4) # U32
+    new  xscope.U32(awg, this, 'freq',      40, 4)
     
     return top
   
