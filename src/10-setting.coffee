@@ -70,5 +70,10 @@ class Setting
     for i in [0...@_nBytes].reverse()
       result = (result << 8) + @_bytes[i]
     return result
+
+  verifiedEnumValue: (str) ->
+    result = i for v, i in @enum when v == str
+    throw new RangeError("#{@name()}: unknown value #{str}") unless result?
+    return result
   
 module.exports.Setting = Setting
