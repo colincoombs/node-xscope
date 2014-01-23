@@ -9,6 +9,7 @@ SOME_OFFSET = 3
 SOME_INDEX = 12
 SOME_NAME = 'fred'
 SOME_DRIVER = {}
+
 class FakeDriver
 
   constructor: (@index, @value) ->

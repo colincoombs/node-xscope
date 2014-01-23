@@ -30,9 +30,27 @@ describe 'U8', ->
   describe 'syncToHw()', ->
     it 'has no tests yet'
 
-  describe 'value()', ->
-    it 'has no tests yet'
+  describe 'configure(value) and value()', ->
+    it 'matches for 0', ->
+      # arrange
+      v = new xscope.U8(null, SOME_DRIVER, SOME_NAME, SOME_INDEX)
+      # act
+      v.configure(0)
+      # assert
+      v.value().should.equal(0)
 
-  describe 'comfigure(value)', ->
-    it 'has no tests yet'
+    it 'matches for 128', ->
+      # arrange
+      v = new xscope.U8(null, SOME_DRIVER, SOME_NAME, SOME_INDEX)
+      # act
+      v.configure(128)
+      # assert
+      v.value().should.equal(128)
 
+    it 'matches for 255', ->
+      # arrange
+      v = new xscope.U8(null, SOME_DRIVER, SOME_NAME, SOME_INDEX)
+      # act
+      v.configure(255)
+      # assert
+      v.value().should.equal(255)

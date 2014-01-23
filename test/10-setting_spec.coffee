@@ -7,6 +7,18 @@ xscope = require('..')
 SOME_NAME = 'fred'
 SOME_DRIVER = {}
 SOME_INDEX = 7
+NUMBER_OF_BYTES = 2
+SOME_VALUE = 83
+
+class FakeDriver
+
+  constructor: (@values) ->
+    #console.log 'values', @values
+    
+  readControlByte: (index) ->
+    throw new Error('wrong index') unless @values[index]?
+    return @values[index]
+
 
 describe 'Setting', ->
   
@@ -25,6 +37,7 @@ describe 'Setting', ->
         SOME_DRIVER,
         SOME_NAME,
         SOME_INDEX,
+        NUMBER_OF_BYTES,
         max: 21,
         min: 1
       )
@@ -60,6 +73,7 @@ describe 'Setting', ->
         SOME_DRIVER,
         SOME_NAME,
         SOME_INDEX,
+        NUMBER_OF_BYTES,
         max: 21,
         min: 1
       )      
@@ -73,6 +87,7 @@ describe 'Setting', ->
         SOME_DRIVER,
         SOME_NAME,
         SOME_INDEX,
+        NUMBER_OF_BYTES,
         max: 21,
         min: 1
       )      
@@ -86,6 +101,7 @@ describe 'Setting', ->
         SOME_DRIVER,
         SOME_NAME,
         SOME_INDEX,
+        NUMBER_OF_BYTES,
         enum: [
           'red',
           'green',
@@ -102,6 +118,7 @@ describe 'Setting', ->
         SOME_DRIVER,
         SOME_NAME,
         SOME_INDEX,
+        NUMBER_OF_BYTES,
         enum: [
           'red',
           'green',
@@ -114,10 +131,21 @@ describe 'Setting', ->
   describe 'value()', ->
     it 'has no tests yet'
 
-
   describe 'syncFromHw()', ->
-    it 'has no tests yet'
-
+    it 'ummm', ->
+      # arrange
+      # grrr - cant use SOME_INDEX here!!
+      driver = new FakeDriver({7: SOME_VALUE})
+      s = new xscope.Setting(null,
+        driver,
+        SOME_NAME,
+        7
+      )
+      # act
+      s.syncFromHw()
+      # assert
+      s.value().should.equal(SOME_VALUE)
+      
   describe 'syncToHw()', ->
     it 'has no tests yet'
 
