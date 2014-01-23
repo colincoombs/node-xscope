@@ -1,6 +1,6 @@
-xscope = require('..')
+Setting = require('./10-setting').Setting
 
-class Group extends xscope.Setting
+class Group extends Setting
 
   constructor: (parent, name) ->
     super(parent, null, name, null)

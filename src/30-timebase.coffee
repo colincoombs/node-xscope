@@ -1,6 +1,6 @@
-xscope = require('..')
+U8 = require('./20-u8').U8
 
-class Timebase extends xscope.U8
+class Timebase extends U8
 
   constructor: (parent, driver, name, index, options = {}) ->
     options.enum = [

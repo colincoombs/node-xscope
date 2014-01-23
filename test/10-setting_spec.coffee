@@ -2,7 +2,9 @@ chai = require('chai')
 should = chai.should()
 expect = chai.expect
 
-xscope = require('..')
+xscope = {}
+xscope.Setting = require('../src-cov/10-setting').Setting
+xscope.Group   = require('../src-cov/20-group').Group
 
 SOME_NAME = 'fred'
 SOME_DRIVER = {}

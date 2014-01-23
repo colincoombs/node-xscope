@@ -1,6 +1,6 @@
-xscope = require('..')
+Setting = require('./10-setting').Setting
 
-class Bits extends xscope.Setting
+class Bits extends Setting
   
   _byte: 0
   
@@ -20,15 +20,15 @@ class Bits extends xscope.Setting
 
   constructor: (parent, driver, name,
                 index, @_shift, @_width, options={}) ->
-    super(parent, driver, name, index, options)
-    throw new Error('driver not defined') unless @_driver?
+    throw new Error('driver not defined') unless driver?
     throw new Error('index not defined') unless index?
     throw new Error('shift not defined') unless @_shift?
     throw new Error('width not defined') unless @_width?
     throw new Error('overflows the byte') unless @_width + @_shift <= 8
     @_mask = @constructor.masks[@_width - 1] << @_shift
-    @min ?= 0
-    @max ?= @constructor.masks[@_width-1]
+    options.min ?= 0
+    options.max ?= @constructor.masks[@_width-1]
+    super(parent, driver, name, index, options)
 
   # @todo - parent should invoke byteToValue which we can override
   # @todo validate min/max

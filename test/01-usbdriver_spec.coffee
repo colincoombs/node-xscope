@@ -8,7 +8,8 @@ fake_usb = require('../fake/usb')
 
 # Software under test
 #
-xscope = require('..')
+xscope = {}
+xscope.UsbDriver = require('../src-cov/01-usbdriver').UsbDriver
 
 describe 'UsbDriver', ->
   

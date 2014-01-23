@@ -1,6 +1,6 @@
-xscope = require('..')
+Setting = require('./10-setting').Setting
 
-class U16 extends xscope.Setting
+class U16 extends Setting
 
   constructor: (parent, driver, name, index, options = {}) ->
     throw new Error('driver not defined') unless driver?

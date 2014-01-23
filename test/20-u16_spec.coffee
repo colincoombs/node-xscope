@@ -2,7 +2,8 @@ chai = require('chai')
 should = chai.should()
 expect = chai.expect
 
-xscope = require('..')
+xscope = {}
+xscope.U16 = require('../src-cov/20-u16').U16
 
 SOME_INDEX = 12
 SOME_NAME = 'fred'

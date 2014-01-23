@@ -4,7 +4,9 @@ chai.use(spies)
 should = chai.should()
 expect = chai.expect
 
-xscope = require('..')
+xscope = {}
+xscope.Group = require('../src-cov/20-group').Group
+xscope.U8    = require('../src-cov/20-u8').U8
 
 describe 'Group', ->
   

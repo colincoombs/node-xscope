@@ -1,7 +1,7 @@
-xscope = require('..')
+XScopeDriver = require('./10-xscopedriver').XScopeDriver
 
 # my controlBytes class
 #
-class XScope extends xscope.XScopeDriver
+class XScope extends XScopeDriver
 
 module.exports.XScope = XScope

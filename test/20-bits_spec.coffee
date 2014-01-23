@@ -2,7 +2,8 @@ chai = require('chai')
 should = chai.should()
 expect = chai.expect
 
-xscope = require('..')
+xscope = {}
+xscope.Bits = require('../src-cov/20-bits').Bits
 
 SOME_WIDTH = 2
 SOME_OFFSET = 3
