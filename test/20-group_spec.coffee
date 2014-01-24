@@ -27,8 +27,28 @@ describe 'Group', ->
       # arrange
       parent = new xscope.Group(null, 'p')
       item = new xscope.Group(parent, 'c')
+      # assert
       item.name().should.equal('p.c')
-  
+
+  describe 'add()', ->
+    it 'adds a child setting', ->
+      # arrange
+      parent = new xscope.Group(null, 'p')
+      item = new xscope.Group(null, 'c')
+      # act
+      parent.add(item)
+      # assert
+      parent.value().should.have.property('c')
+    
+    it 'refuses to allow the same child twice', ->
+      # arrange
+      parent = new xscope.Group(null, 'p')
+      item1 = new xscope.Group(null, 'c')
+      item2 = new xscope.Group(null, 'c')
+      parent.add(item1)
+      # act & assert
+      (-> parent.add(item2)).should.throw(Error)
+    
   describe 'value()', ->
     it 'contains the values of each component', ->
       # arrange
