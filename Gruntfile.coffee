@@ -20,14 +20,6 @@ module.exports = (grunt) ->
           join: false
           sourceMap: true
  
-    mochacov:
-      options:
-        interface: 'bdd'
-        reporter: 'html-cov'
-        output: 'doc/coverage/all.html'
-      all:
-        ['test/*.coffee']
-        
     simplemocha:
       all:
         options:
@@ -58,7 +50,6 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-exec'
   grunt.loadNpmTasks 'grunt-simple-mocha'
   grunt.loadNpmTasks 'grunt-coffeecov'
-  grunt.loadNpmTasks 'grunt-mocha-cov'
   
   grunt.registerTask 'prepublish', [
     'test'
@@ -66,9 +57,13 @@ module.exports = (grunt) ->
     'exec:doc'
   ]
   
+  grunt.registerTask 'coverage', [
+    'coffeecov'
+    'simplemocha:cov'
+  ]
+
   grunt.registerTask 'test', [
     'coffeelint:all'
     'coffee:all'
-    'coffeecov'
-    'mochacov'
+    'simplemocha:all'
   ]

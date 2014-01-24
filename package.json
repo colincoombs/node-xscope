@@ -2,7 +2,7 @@
   "name": "node-xscope",
   "version": "0.0.1",
   "description": "node.js USB driver for Xminilab oscilloscope",
-  "main": "lib/00-xscope.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "grunt test"
   },
@@ -35,8 +35,14 @@
     "grunt-simple-mocha": "~0.4.0",
     "chai": "~1.8.1",
     "chai-spies": "~0.5.1",
-    "grunt-mocha-cov": "~0.2.0",
     "coffee-script": "~1.6.3",
     "grunt-coffeecov": "~0.1.1"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [
+        "src"
+      ]
+    }
   }
 }
