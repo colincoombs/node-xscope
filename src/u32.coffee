@@ -1,12 +1,12 @@
-Setting = require('./10-setting').Setting
+Setting = require('./setting')
 
-class U8 extends Setting
+class U32 extends Setting
 
   constructor: (parent, driver, name, index, options = {}) ->
     throw new Error('driver not defined') unless driver?
     throw new Error('index not defined') unless index?
+    options.max ?= 0xFFFFFFFF
     options.min ?= 0
-    options.max ?= 255
-    super(parent, driver, name, index, 1, options)
+    super(parent, driver, name, index, 4, options)
     
-module.exports.U8 = U8
+module.exports = U32

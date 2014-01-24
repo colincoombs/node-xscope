@@ -3,7 +3,7 @@ should = chai.should()
 expect = chai.expect
 
 xscope = {}
-xscope.U8 = require('../src-cov/20-u8').U8
+xscope.U8 = require('../src-cov/u8')
 
 SOME_INDEX = 12
 SOME_NAME = 'fred'
@@ -23,14 +23,10 @@ describe 'U8', ->
       (-> new xscope.U8(null, SOME_DRIVER, SOME_NAME, null)).should.throw(Error)
     
     it 'works, otherwise', ->
-      (-> new xscope.U8(null, SOME_DRIVER, SOME_NAME, SOME_INDEX)).should.not.throw(Error)
+      #(->
+      new xscope.U8(null, SOME_DRIVER, SOME_NAME, SOME_INDEX)
+      #).should.not.throw(Error)
       
-  describe 'syncFromHw()', ->
-    it 'has no tests yet'
-
-  describe 'syncToHw()', ->
-    it 'has no tests yet'
-
   describe 'configure(value) and value()', ->
     it 'matches for 0', ->
       # arrange
@@ -55,3 +51,10 @@ describe 'U8', ->
       v.configure(255)
       # assert
       v.value().should.equal(255)
+
+  describe 'syncFromHw()', ->
+    it 'has no tests yet'
+
+  describe 'syncToHw()', ->
+    it 'has no tests yet'
+

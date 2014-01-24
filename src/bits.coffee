@@ -1,4 +1,4 @@
-Setting = require('./10-setting').Setting
+Setting = require('./setting')
 
 class Bits extends Setting
   
@@ -58,4 +58,4 @@ class Bits extends Setting
       @_value = value
     @_byte = @_value << @_shift
     
-module.exports.Bits = Bits
+module.exports = Bits

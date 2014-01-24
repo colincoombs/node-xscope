@@ -1,4 +1,4 @@
-Setting = require('./10-setting').Setting
+Setting = require('./setting')
 
 class S8 extends Setting
 
@@ -18,4 +18,4 @@ class S8 extends Setting
     result = result - 256 if result > 127
     return result
 
-module.exports.S8 = S8
+module.exports = S8

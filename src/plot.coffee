@@ -38,4 +38,4 @@ class Plot extends stream.Transform
     # tell the caller we're done with this frame
     cb()
     
-module.exports.Plot = Plot
+module.exports = Plot

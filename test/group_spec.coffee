@@ -5,8 +5,8 @@ should = chai.should()
 expect = chai.expect
 
 xscope = {}
-xscope.Group = require('../src-cov/20-group').Group
-xscope.U8    = require('../src-cov/20-u8').U8
+xscope.Group = require('../src-cov/group')
+xscope.U8    = require('../src-cov/u8')
 
 describe 'Group', ->
   

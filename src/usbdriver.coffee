@@ -170,4 +170,4 @@ class UsbDriver
   __streamEnd: () =>
     @__writeStream.end()
     
-module.exports.UsbDriver = UsbDriver
+module.exports = UsbDriver

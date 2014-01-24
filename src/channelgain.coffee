@@ -1,4 +1,4 @@
-U8 = require('./20-u8').U8
+U8 = require('./u8')
 
 class ChannelGain extends U8
 
@@ -26,4 +26,4 @@ class ChannelGain extends U8
     ]
     return vpp[@_value]
   
-module.exports.ChannelGain = ChannelGain
+module.exports = ChannelGain

@@ -1,4 +1,4 @@
-Setting = require('./10-setting').Setting
+Setting = require('./setting')
 
 class U16 extends Setting
 
@@ -9,4 +9,4 @@ class U16 extends Setting
     options.min ?= 0
     super(parent, driver, name, index, 2, options)
     
-module.exports.U16 = U16
+module.exports = U16

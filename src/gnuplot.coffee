@@ -43,5 +43,5 @@ class Gnuplot extends stream.Transform
     child.stderr.pipe(process.stderr)
     cb() if cb?
 
-module.exports.Gnuplot = Gnuplot
+module.exports = Gnuplot
 

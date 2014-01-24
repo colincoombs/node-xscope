@@ -1,4 +1,4 @@
-U8 = require('./20-u8').U8
+U8 = require('./u8')
 
 class Timebase extends U8
 
@@ -56,4 +56,4 @@ class Timebase extends U8
     ]
     return values[@_value]
 
-module.exports.Timebase = Timebase
+module.exports = Timebase

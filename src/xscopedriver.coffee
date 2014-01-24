@@ -1,14 +1,14 @@
 Q = require('q')
 
-UsbDriver   = require('./01-usbdriver').UsbDriver
-Group       = require('./20-group').Group
-Bits        = require('./20-bits').Bits
-U32         = require('./20-u32').U32
-U16         = require('./20-u16').U16
-U8          = require('./20-u8').U8
-S8          = require('./20-s8').S8
-Timebase    = require('./30-timebase').Timebase
-ChannelGain = require('./30-channelgain').ChannelGain
+UsbDriver   = require('./usbdriver')
+Group       = require('./group')
+Bits        = require('./bits')
+U32         = require('./u32')
+U16         = require('./u16')
+U8          = require('./u8')
+S8          = require('./s8')
+Timebase    = require('./timebase')
+ChannelGain = require('./channelgain')
 
 # my controlBytes class
 #
@@ -178,4 +178,4 @@ class XScopeDriver extends UsbDriver
     
     return top
   
-module.exports.XScopeDriver = XScopeDriver
+module.exports = XScopeDriver

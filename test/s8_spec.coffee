@@ -3,7 +3,7 @@ should = chai.should()
 expect = chai.expect
 
 xscope = {}
-xscope.S8 = require('../src-cov/20-s8').S8
+xscope.S8 = require('../src-cov/s8')
 
 SOME_INDEX = 12
 SOME_NAME = 'fred'

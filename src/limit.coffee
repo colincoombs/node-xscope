@@ -41,5 +41,5 @@ class Limit extends stream.Transform
   then: (args...) ->
     @deferred.promise.then(args...)
     
-module.exports.Limit = Limit
+module.exports = Limit
 

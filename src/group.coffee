@@ -1,4 +1,4 @@
-Setting = require('./10-setting').Setting
+Setting = require('./setting')
 
 class Group extends Setting
 
@@ -34,4 +34,4 @@ class Group extends Setting
     for n, v of @_value
       v.syncToHw()
 
-module.exports.Group = Group
+module.exports = Group

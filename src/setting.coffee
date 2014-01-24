@@ -126,4 +126,4 @@ class Setting
     throw new RangeError("#{@name()}: unknown value #{str}") unless result?
     return result
   
-module.exports.Setting = Setting
+module.exports = Setting

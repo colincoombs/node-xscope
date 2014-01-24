@@ -9,7 +9,7 @@ fake_usb = require('../fake/usb')
 # Software under test
 #
 xscope = {}
-xscope.XScope = require('../src-cov/20-xscope').XScope
+xscope.XScope = require('../src-cov/xscope')
 
 describe 'XScope', ->
   
