@@ -64,9 +64,63 @@ describe 'XScopeDriver', ->
   describe 'stop()', ->
     it 'has no tests yet'
   
-  describe 'syncFromHw()', ->
-    it 'has no tests yet'
+  describe 'syncFromHw()', (done) ->
+    it 'works?', ->
+      # arrange
+      fake_usb.configure { findDevice: true }
+      driver = new xscope.XScopeDriver(fake_usb)
+      # act
+      promise = driver.open()
+        .then( driver.syncFromHw )
+      # assert
+      promise.then(
+        ()    -> done()
+      , (err) -> done(err)
+      )
   
+  describe 'syncToHw()', (done) ->
+    it 'does normal cases', ->
+      # arrange
+      fake_usb.configure { findDevice: true }
+      driver = new xscope.XScopeDriver(fake_usb)
+      # act
+      promise = driver.open().then( =>
+        driver.settings.configure
+          timebase: '64us/div'
+          trigger:
+            post: 12345
+        driver.settings.syncToHw()
+        driver.syncToHw()
+      )
+      # assert
+      promise.then(
+        ()    -> done()
+      , (err) ->
+          console.log 'OH SHIT', err.stack()
+          done(err)
+      )
+  
+    #it 'does the awg frequency', (done) ->
+    #  # arrange
+    #  fake_usb.configure { findDevice: true }
+    #  driver = new xscope.XScopeDriver(fake_usb)
+    #  # act
+    #  promise = driver.open().then( =>
+    #    driver.settings.configure
+    #      awg:
+    #        freq: 6600
+    #    driver.settings.syncToHw()
+    #    driver.syncToHw()
+    #  )
+    #  # assert
+    #  promise.then(
+    #    ()    ->
+    #      done()
+    #  , (err) ->
+    #      console.log 'OH SHIT', err.stack()
+    #      done(err)
+    #  )
+
   describe 'readControlByte(index)', ->
     it 'has no tests yet'
   

@@ -4,6 +4,8 @@ chai.use(spies)
 should = chai.should()
 expect = chai.expect
 
+FakeDriver = require('../fake/driver')
+
 xscope = {}
 xscope.Group = require('../src-cov/group')
 xscope.U8    = require('../src-cov/u8')
@@ -52,7 +54,7 @@ describe 'Group', ->
   describe 'value()', ->
     it 'contains the values of each component', ->
       # arrange
-      driver = {}
+      driver = new FakeDriver()
       g = new xscope.Group(null, 'g')
       a = new xscope.U8(g, driver, 'a', 0)
       b = new xscope.U8(g, driver, 'b', 1)
@@ -65,7 +67,7 @@ describe 'Group', ->
   describe 'configure', ->
     it 'sets the value of each component', ->
       # arrange
-      driver = {}
+      driver = new FakeDriver()
       g = new xscope.Group(null, 'g')
       a = new xscope.U8(g, driver, 'a', 0)
       b = new xscope.U8(g, driver, 'b', 1)
@@ -77,7 +79,7 @@ describe 'Group', ->
     
     it 'rejects unknown component names', ->
       # arrange
-      driver = {}
+      driver = new FakeDriver()
       g = new xscope.Group(null, 'g')
       a = new xscope.U8(g, driver, 'a', 0)
       b = new xscope.U8(g, driver, 'b', 1)
@@ -87,7 +89,7 @@ describe 'Group', ->
   describe 'syncFromHw()', ->
     it 'passes the call to each component', ->
       # arrange
-      driver = { }
+      driver = new FakeDriver()
       g = new xscope.Group(null, 'g')
       a = new xscope.U8(g, driver, 'a', 0)
       b = new xscope.U8(g, driver, 'b', 1)
@@ -102,7 +104,7 @@ describe 'Group', ->
   describe 'syncToHw()', ->
     it 'passes the call to each component', ->
       # arrange
-      driver = { }
+      driver = new FakeDriver()
       g = new xscope.Group(null, 'g')
       a = new xscope.U8(g, driver, 'a', 0)
       b = new xscope.U8(g, driver, 'b', 1)

@@ -47,6 +47,8 @@ class Device
   controlTransfer: (t,c,i,v,dol,cb) ->
     switch c
       when 0x61 then cb(null, new Buffer('3.14159'))
+      when 0x62 then cb(null, null)
+      when 0x63 then cb(null, null)
       when 0x75 then cb(null, new Buffer(@dummySettings))
       else cb(new Error("unknown command code #{c}"), null)
         

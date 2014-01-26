@@ -12,14 +12,8 @@ SOME_INDEX = 7
 NUMBER_OF_BYTES = 2
 SOME_VALUE = 83
 
-class FakeDriver
-
-  constructor: (@values) ->
-    #console.log 'values', @values
-    
-  readControlByte: (index) ->
-    throw new Error('wrong index') unless @values[index]?
-    return @values[index]
+FakeDriver = require('../fake/driver')
+SOME_DRIVER = new FakeDriver()
 
 
 describe 'Setting', ->
@@ -131,7 +125,24 @@ describe 'Setting', ->
       (-> s.configure('green')).should.not.throw(RangeError)
 
   describe 'value()', ->
-    it 'has no tests yet'
+    it 'shows the value', ->
+      # arrange
+      s = new xscope.Setting(
+        null,
+        SOME_DRIVER,
+        SOME_NAME,
+        SOME_INDEX,
+        NUMBER_OF_BYTES,
+        enum: [
+          'red',
+          'green',
+          'blue'
+        ]
+      )
+      # act
+      s.configure('blue')
+      # assert
+      s.value().should.equal('blue')
 
   describe 'syncFromHw()', ->
     it 'ummm', ->
@@ -149,5 +160,17 @@ describe 'Setting', ->
       s.value().should.equal(SOME_VALUE)
       
   describe 'syncToHw()', ->
-    it 'has no tests yet'
+    it 'works', ->
+      # arrange
+      # grrr - cant use SOME_INDEX here!!
+      driver = new FakeDriver({7: SOME_VALUE})
+      s = new xscope.Setting(null,
+        driver,
+        SOME_NAME,
+        7
+      )
+      # act
+      s.syncToHw()
+      # assert
+      #s.value().should.equal(SOME_VALUE)
 

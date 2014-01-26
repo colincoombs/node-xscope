@@ -4,20 +4,16 @@ expect = chai.expect
 
 xscope = {}
 xscope.S8 = require('../src-cov/s8')
+xscope.XScopeDriver = require('../src-cov/xscopedriver')
 
 SOME_INDEX = 12
 SOME_NAME = 'fred'
-SOME_DRIVER = {}
 
-class FakeDriver
+FakeDriver = require('../fake/driver')
+SOME_DRIVER = new FakeDriver()
 
-  constructor: (@values) ->
-    #console.log 'values', @values
-    
-  readControlByte: (index) ->
-    throw new Error('wrong index') unless @values[index]?
-    return @values[index]
-
+usb = require('../fake/usb')
+SOME_DRIVER = new FakeDriver()
 
 describe 'S8', ->
   
@@ -65,7 +61,31 @@ describe 'S8', ->
       s.value().should.equal(127)
       
   describe 'syncToHw()', ->
-    it 'has no tests yet'
+    it 'works for -128', ->
+      driver = new xscope.XScopeDriver(usb)#FakeDriver( 12: 0 )
+      s      = new xscope.S8(null,
+        driver,
+        SOME_NAME,
+        SOME_INDEX
+      )
+      #act
+      s.configure(-128)
+      s.syncToHw()
+      #assert
+      driver.readControlBytes(SOME_INDEX)[0].should.equal(0x80)
+
+    it 'works for 127', ->
+      driver = new xscope.XScopeDriver(usb)#FakeDriver( 12: 0 )
+      s      = new xscope.S8(null,
+        driver,
+        SOME_NAME,
+        SOME_INDEX
+      )
+      #act
+      s.configure(127)
+      s.syncToHw()
+      #assert
+      driver.readControlBytes(SOME_INDEX)[0].should.equal(0x7F)
 
   describe 'configure(value) and value()', ->
     it 'matches for 0', ->

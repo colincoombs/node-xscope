@@ -36,7 +36,10 @@
     "chai": "~1.8.1",
     "chai-spies": "~0.5.1",
     "coffee-script": "~1.6.3",
-    "grunt-coffeecov": "~0.1.1"
+    "grunt-coffeecov": "~0.1.1",
+    "chai-as-promised": "~4.1.0",
+    "mocha": "~1.17.1",
+    "mocha-as-promised": "~2.0.0"
   },
   "config": {
     "blanket": {

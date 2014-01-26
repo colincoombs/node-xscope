@@ -27,20 +27,12 @@ class UsbDriver
   # @private
   __writeStream: null
   
-  # @property [Array<Integer>] to hold the scope's control data
-  # @protected
-  #
-  _controlBytes: null
-    
   # @param [Object] usb the usb module (required)
   # @param [Integer] vid USB vendor id (optional)
   # @param [Integer} pid USB product id (optional)
   #
   constructor: (@usb, @vid=0x16D0, @pid=0x06F9) ->
     throw new Error('usb module required') unless @usb?
-    @_controlBytes = []
-    for i in [0...44]
-      @_controlBytes[i] = 0
     
   # @return [Promise] for completion
   #
@@ -80,15 +72,15 @@ class UsbDriver
   # @protected
   #
   _controlTransfer: (cmd, index=0, value=0, data_or_length=0) =>
-    #console.log 'controlTransfer', cmd, index, value, data_or_length
+    console.log 'controlTransfer', cmd, index, value, data_or_length
     deferred = Q.defer()
     if @__dev
-      @__dev.controlTransfer(0xC0, cmd, index, 0, data_or_length, (err, data) ->
-        if (err)
-          console.log 'oops', err
-          deferred.reject(err)
-        else
-          deferred.resolve(data)
+      @__dev.controlTransfer(0xC0, cmd, value, index, data_or_length,
+        (err, data) ->
+          if (err)
+            deferred.reject(err)
+          else
+            deferred.resolve(data)
       )
     else
       deferred.reject(new Error('device not open'))
@@ -110,6 +102,24 @@ class UsbDriver
       deferred.reject(new Error('device not open'))
     return deferred.promise
     
+  # @param [Integer] length to try reading
+  # @return [Promise] for completion
+  # @todo limit to 2 reads, then reejct the promise!
+  #
+  flush: (length=770) =>
+    deferred = Q.defer()
+    @read(length).then( =>
+      # one read is allowed to succeed, check that no more comes
+      @read(length)
+    ).then( ->
+      # the scope is running, no good
+      deferred.reject(new Error(' the scope is running'))
+    ).fail( ->
+      # really we should allow the timeout error only!
+      deferred.resolve()
+    )
+    return deferred.promise
+    
   # @param [Buffer] data to write
   # @return [Promise] for completion
   #
@@ -125,20 +135,6 @@ class UsbDriver
     else
       deferred.reject(new Error('device not open'))
     return deferred.promise
-    
-  # @param [Integer] length to try reading
-  # @return [Promise] for completion
-  # @todo limit to 2 reads, then reejct the promise!
-  #
-  flush: (length=770) =>
-    deferred = Q.defer()
-    @read(length).then( () ->
-      @flush()
-    , deferred.resolve()
-    )
-    return deferred.promise
-    
-    
     
   # @param [WriteStream] writeStream
   # @return [Promise]

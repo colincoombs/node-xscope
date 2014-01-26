@@ -38,6 +38,8 @@ module.exports = (grunt) ->
       cov:
         src: 'src'
         dest: 'src-cov'
+        options:
+          sourceMap: true
         
     exec:
       doc:
@@ -53,6 +55,7 @@ module.exports = (grunt) ->
   
   grunt.registerTask 'prepublish', [
     'test'
+    'coffee:all'
     'exec:plantuml'
     'exec:doc'
   ]
@@ -64,6 +67,6 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'test', [
     'coffeelint:all'
-    'coffee:all'
+    'coffeecov'
     'simplemocha:all'
   ]

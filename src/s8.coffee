@@ -8,14 +8,14 @@ class S8 extends Setting
     options.min ?= -128
     options.max ?= 127
     super(parent, driver, name, index, 1, options)
-    
-  valueToBytes: (value) ->
-    super(value % 256)
-    #@_bytes[0] = @_bytes[0] % 256
-    
-  bytesToValue: () ->
-    result = super()
-    result = result - 256 if result > 127
-    return result
 
+  decode: (value) ->
+    if value > 127
+      value - 256
+    else
+      value
+    
+  encode: (value) ->
+    value % 256
+    
 module.exports = S8

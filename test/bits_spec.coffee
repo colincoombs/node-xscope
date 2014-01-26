@@ -9,17 +9,11 @@ SOME_WIDTH = 2
 SOME_OFFSET = 3
 SOME_INDEX = 12
 SOME_NAME = 'fred'
-SOME_DRIVER = {}
 
-class FakeDriver
+FakeDriver = require('../fake/driver')
 
-  constructor: (@index, @value) ->
-    #
-    
-  readControlByte: (index) ->
-    throw new Error('wrong index') unless index = @index
-    return @value
-  
+SOME_DRIVER = new FakeDriver
+
 describe 'Bits', ->
   
   describe 'constructor(parent, driver, name, index, offset, width)', ->
@@ -48,7 +42,7 @@ describe 'Bits', ->
   describe 'syncFromHw()', ->
     it 'works', ->
       #arrange
-      driver = new FakeDriver(SOME_INDEX, 0xFF)
+      driver = new FakeDriver( 12: 0xFF )
       bits   = new xscope.Bits(null, driver, SOME_NAME, SOME_INDEX,
         4,
         3)
@@ -58,7 +52,16 @@ describe 'Bits', ->
       bits.value().should.equal(7)
 
   describe 'syncToHw()', ->
-    it 'has no tests yet'
+    it 'works', ->
+      driver = new FakeDriver( 12: 0xCF )
+      bits   = new xscope.Bits(null, driver, SOME_NAME, SOME_INDEX,
+        4,
+        3)
+      #act
+      bits.configure(5)
+      bits.syncToHw()
+      #assert
+      driver.values[12].should.equal(0xDF)
 
   describe 'value()', ->
     it 'has no tests yet'

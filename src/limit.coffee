@@ -18,10 +18,12 @@ class Limit extends stream.Transform
   
   # @param [Integer] limit - maximum number of frames to pass
   # @param [Object] options - for the superclass Transform
-  constructor: (@limit=1, options={}) ->
+  constructor: (@limit, stopper, options={}) ->
     super(options)
+    @limit ?= 1
     @count = 0
     @deferred = Q.defer()
+    @deferred.promise.then(stopper) if stopper?
     
   # handle each frame
   # @param [Buffer] chunk - captured data
@@ -38,8 +40,5 @@ class Limit extends stream.Transform
     # sound the alarm if the limit has been reached
     @deferred.resolve() if (@count == @limit)
 
-  then: (args...) ->
-    @deferred.promise.then(args...)
-    
 module.exports = Limit
 

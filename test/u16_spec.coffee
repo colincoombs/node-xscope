@@ -7,17 +7,9 @@ xscope.U16 = require('../src-cov/u16')
 
 SOME_INDEX = 12
 SOME_NAME = 'fred'
-SOME_DRIVER = {}
 
-class FakeDriver
-
-  constructor: (@values) ->
-    #console.log 'values', @values
-    
-  readControlByte: (index) ->
-    throw new Error('wrong index') unless @values[index]?
-    return @values[index]
-
+FakeDriver = require('../fake/driver')
+SOME_DRIVER = new FakeDriver()
 
 
 describe 'U16', ->
@@ -37,7 +29,7 @@ describe 'U16', ->
       (-> new xscope.U16(null, SOME_DRIVER, SOME_NAME, SOME_INDEX)).should.not.throw(Error)
       
   describe 'syncFromHw()', ->
-    it 'ummm', ->
+    it 'works', ->
       # arrange
       # grrr - cant use SOME_INDEX here!!
       driver = new FakeDriver({7: 0x34, 8: 0x12})

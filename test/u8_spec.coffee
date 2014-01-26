@@ -7,7 +7,8 @@ xscope.U8 = require('../src-cov/u8')
 
 SOME_INDEX = 12
 SOME_NAME = 'fred'
-SOME_DRIVER = {}
+FakeDriver = require('../fake/driver')
+SOME_DRIVER = new FakeDriver()
 
 describe 'U8', ->
   

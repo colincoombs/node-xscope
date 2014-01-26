@@ -35,7 +35,7 @@ class Gnuplot extends stream.Transform
         # add parameters to taste ...
         '-e', 'set grid',
         '-e', 'set yrange [-5:5]',
-        '-e', "plot '#{@fn}' using 1:2 with lines",
+        '-e', "plot '#{@fn}' using 1:2 with lines title 'ch1'",
         '--persist'
       ]
     )
