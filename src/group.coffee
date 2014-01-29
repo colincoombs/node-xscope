@@ -18,6 +18,12 @@ class Group extends Setting
       result[n] = v.value()
     return result
 
+  metadata: () ->
+    result = {group: true}
+    for n, v of @_value
+      result[n] = v.metadata()
+    return result
+
   configure: (value) ->
     #console.log 'configure', value, @_value
     for n, v of value

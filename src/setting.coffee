@@ -42,8 +42,8 @@ class Setting extends events.EventEmitter
     for n, v of options
       @[n] = v
     if @enum
-      @_min ?= 0
-      @_max ?= @enum.length
+      @min = 0
+      @max = @enum.length - 1
     if @_driver?
       @_driver.watchControlBytes(this, @_index, @_nBytes)
 
@@ -55,6 +55,15 @@ class Setting extends events.EventEmitter
     else
       @_name
 
+  # blah
+  #
+  metadata: () ->
+    result = {}
+    for field in ['min', 'max', 'enum']
+      if this[field]?
+        result[field] = this[field]
+    return result
+  
   # blah
   #
   value: () ->

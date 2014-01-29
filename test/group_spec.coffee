@@ -9,6 +9,7 @@ FakeDriver = require('../fake/driver')
 xscope = {}
 xscope.Group = require('../src-cov/group')
 xscope.U8    = require('../src-cov/u8')
+xscope.U16   = require('../src-cov/u16')
 
 describe 'Group', ->
   
@@ -63,6 +64,26 @@ describe 'Group', ->
       # assert
       g.value().should.have.property('a', 44)
       g.value().should.have.property('b', 55)
+  
+  describe 'metadata()', ->
+    it 'contains the metadata of each component', ->
+      # arrange
+      driver = new FakeDriver()
+      g = new xscope.Group(null, 'g')
+      a = new xscope.U8(g, driver, 'a', 0)
+      b = new xscope.U16(g, driver, 'b', 1)
+      a.configure(44)
+      b.configure(55)
+      # assert
+      g.metadata().should.deep.equal(
+        group: true
+        a:
+          min: 0
+          max: 255
+        b:
+          min: 0
+          max: 65535
+      )
   
   describe 'configure', ->
     it 'sets the value of each component', ->

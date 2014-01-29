@@ -5,6 +5,7 @@ expect = chai.expect
 xscope = {}
 xscope.Setting = require('../src-cov/setting')
 xscope.Group   = require('../src-cov/group')
+xscope.U8      = require('../src-cov/u8')
 
 SOME_NAME = 'fred'
 SOME_DRIVER = {}
@@ -143,6 +144,37 @@ describe 'Setting', ->
       s.configure('blue')
       # assert
       s.value().should.equal('blue')
+
+  describe 'metadata()', ->
+    it 'does numerics', ->
+      # arrange
+      s = new xscope.U8(
+        null,
+        SOME_DRIVER,
+        SOME_NAME,
+        SOME_INDEX
+      )
+      # act, # assert
+      s.metadata().should.deep.equal({min: 0, max: 255})
+
+    it 'does enums', ->
+      # arrange
+      s = new xscope.U8(
+        null,
+        SOME_DRIVER,
+        SOME_NAME,
+        SOME_INDEX,
+        enum: [
+          'black',
+          'white'
+        ]
+      )
+      # act, # assert
+      s.metadata().should.deep.equal({
+        min: 0,
+        max: 1,
+        enum: ['black','white']
+      })
 
   describe 'syncFromHw()', ->
     it 'ummm', ->
